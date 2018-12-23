@@ -15077,14 +15077,14 @@ void LivingLifePage::step() {
         
 
         // current age
-        double age = computeCurrentAge( ourLiveObject );
+        //double age = computeCurrentAge( ourLiveObject );
 
-        int sayCap = 80;
+        int sayCap = 10;
         
-        if( ourLiveObject->lineage.size() == 0  && sayCap < 30 ) {
+        //if( ourLiveObject->lineage.size() == 0  && sayCap < 30 ) {
             // eve has a larger say limit
-            sayCap = 30;
-            }
+        //    sayCap = 30;
+        //    }
         char *currentText = mSayField.getText();
         
         if( strlen( currentText ) > 0 && currentText[0] == '/' ) {
