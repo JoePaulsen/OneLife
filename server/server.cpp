@@ -85,7 +85,7 @@ int babyAge = 5;
 double forceDeathAge = 60;
 
 
-double minSayGapInSeconds = 1.0;
+double minSayGapInSeconds = 0.1;
 
 int maxLineageTracked = 20;
 
@@ -1696,13 +1696,7 @@ double computeAge( LiveObject *inPlayer ) {
 
 
 int getSayLimit( LiveObject *inPlayer ) {
-    int limit = (unsigned int)( floor( computeAge( inPlayer ) ) + 1 );
-
-    if( inPlayer->isEve && limit < 30 ) {
-        // give Eve room to name her family line
-        limit = 30;
-        }
-    return limit;
+    return 60;
     }
 
 
