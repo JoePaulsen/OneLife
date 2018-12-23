@@ -15079,7 +15079,7 @@ void LivingLifePage::step() {
         // current age
         double age = computeCurrentAge( ourLiveObject );
 
-        int sayCap = (int)( floor( age ) + 1 );
+        int sayCap = 80;
         
         if( ourLiveObject->lineage.size() == 0  && sayCap < 30 ) {
             // eve has a larger say limit
