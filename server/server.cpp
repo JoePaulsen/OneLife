@@ -4600,9 +4600,11 @@ int processLoggedInPlayer( Socket *inSock,
         
         // else starts at civ outskirts (lone Eve)
         int startX, startY;
-        getEvePosition( newObject.email, &startX, &startY );
+        startX = 13370;
+        startY = 12380;
+        //getEvePosition( newObject.email, &startX, &startY );
 
-        if( inCurseStatus.curseLevel > 0 ) {
+        if(false/* inCurseStatus.curseLevel > 0 */) {
             // keep cursed players away
 
             // 20K away in X and 20K away in Y, pushing out away from 0
@@ -4620,13 +4622,13 @@ int processLoggedInPlayer( Socket *inSock,
             }
         
 
-        if( SettingsManager::getIntSetting( "forceEveLocation", 0 ) ) {
+        /*if( SettingsManager::getIntSetting( "forceEveLocation", 0 ) ) {
 
             startX = 
                 SettingsManager::getIntSetting( "forceEveLocationX", 0 );
             startY = 
                 SettingsManager::getIntSetting( "forceEveLocationY", 0 );
-            }
+            }*/
         
         
         newObject.xs = startX;
