@@ -4642,6 +4642,9 @@ int processLoggedInPlayer( Socket *inSock,
             }
         }
     
+    //overwrite everything and start here instead
+    newObject.xs = 13370;
+    newObject.ys = 12380;
 
     if( inForceDisplayID != -1 ) {
         newObject.displayID = inForceDisplayID;
@@ -4684,7 +4687,7 @@ int processLoggedInPlayer( Socket *inSock,
 
     newObject.holdingID = 0;
 
-
+/*
     if( areTriggersEnabled() ) {
         int id = getTriggerPlayerDisplayID( inEmail );
         
@@ -4707,7 +4710,7 @@ int processLoggedInPlayer( Socket *inSock,
             newObject.clothing = getTriggerPlayerClothing( inEmail );
             }
         }
-    
+  */  
     
     newObject.lineage = new SimpleVector<int>();
     
