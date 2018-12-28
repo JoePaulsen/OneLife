@@ -4678,6 +4678,19 @@ int processLoggedInPlayer( Socket *inSock,
             }
         }
     
+    // first town
+    //int MySpotOverrideX = 13370;
+    //int MySpotOverrideY = 12380;
+
+
+    // second town.
+    int MySpotOverrideX = 28546;
+    int MySpotOverrideY = 28242;
+
+
+
+    int spotOverrideRandomFactor = 10;
+
     
     if( !placed ) {
         // tutorial didn't happen if not placed
@@ -4697,9 +4710,10 @@ int processLoggedInPlayer( Socket *inSock,
 
         // else starts at civ outskirts (lone Eve)
         int startX, startY;
-        
-        startX = 13370;
-        startY = 12380;
+
+
+        startX = MySpotOverrideX + randSource.getRandomBoundedInt( -spotOverrideRandomFactor, spotOverrideRandomFactor );
+        startY = MySpotOverrideY + randSource.getRandomBoundedInt( -spotOverrideRandomFactor, spotOverrideRandomFactor );
 
         if(false/* inCurseStatus.curseLevel > 0 */) {
             // keep cursed players away
@@ -4738,10 +4752,6 @@ int processLoggedInPlayer( Socket *inSock,
             maxPlacementX = newObject.xs;
             }
         }
-    
-    //overwrite everything and start here instead
-    newObject.xs = 13370;
-    newObject.ys = 12380;
 
     if( inForceDisplayID != -1 ) {
         newObject.displayID = inForceDisplayID;
