@@ -1,4 +1,4 @@
-int versionNumber = 185;
+int versionNumber = 188;
 int dataVersionNumber = 0;
 
 // NOTE that OneLife doesn't use account hmacs
@@ -1670,7 +1670,7 @@ void drawFrame( char inUpdate ) {
                 currentGamePage = twinPage;
                 currentGamePage->base_makeActive( true );
                 }
-            else if( existingAccountPage->checkSignal( "done" ) 
+            else if( existingAccountPage->checkSignal( "done" )
                      || 
                      mapPullMode || autoLogIn ) {
                 
@@ -1685,7 +1685,19 @@ void drawFrame( char inUpdate ) {
                     delete [] userTwinCode;
                     userTwinCode = NULL;
                     }
-                
+
+                startConnecting();
+                }
+            else if( existingAccountPage->checkSignal( "tutorial" ) ) {
+                livingLifePage->runTutorial();
+
+                // tutorial button clears twin status
+                // they have to login from twin page to play as twin
+                if( userTwinCode != NULL ) {
+                    delete [] userTwinCode;
+                    userTwinCode = NULL;
+                    }
+
                 startConnecting();
                 }
             else if( autoUpdatePage->checkSignal( "relaunchFailed" ) ) {

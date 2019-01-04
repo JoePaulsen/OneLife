@@ -84,6 +84,10 @@ int minPickupBabyAge = 10;
 
 int babyAge = 5;
 
+// age when bare-hand actions become available to a baby (opening doors, etc.)
+int defaultActionAge = 3;
+
+
 double forceDeathAge = 60;
 
 
@@ -3387,9 +3391,11 @@ void handleDrop( int inX, int inY, LiveObject *inDroppingPlayer,
                                     
         
         GridPos spot;
+
+        GridPos playerPos = getPlayerPos( inDroppingPlayer );
         
         char found = findDropSpot( inX, inY, 
-                                   inDroppingPlayer->xd, inDroppingPlayer->yd,
+                                   playerPos.x, playerPos.y,
                                    &spot );
         
         int foundX = spot.x;
@@ -5455,7 +5461,7 @@ static char addHeldToContainer( LiveObject *inPlayer,
                                                        numInNow );
                     
                         if( bottomNum != topNum ) {
-                            same = true;
+                            same = false;
                             }
                         else {
                             for( int b=0; b<bottomNum; b++ ) {
@@ -9230,6 +9236,17 @@ int main() {
                                             hitPlayer->customGraveID = 
                                                 rHit->newTarget;
                                             }
+                                        
+                                        char wasSick = false;
+                                        
+                                        if( hitPlayer->holdingID > 0 &&
+                                            strstr(
+                                                getObject( 
+                                                    hitPlayer->holdingID )->
+                                                description,
+                                                "sick" ) != NULL ) {
+                                            wasSick = true;
+                                            }
 
                                         // last use on actor specifies
                                         // what is left in victim's hand
@@ -9258,9 +9275,13 @@ int main() {
                                             // an easier-to-treat wound
                                             // to replace their hard-to-treat
                                             // wound
+
+                                            // however, do let wounds replace
+                                            // sickness
                                             char woundChange = false;
                                             
-                                            if( ! hitPlayer->holdingWound ) {
+                                            if( ! hitPlayer->holdingWound ||
+                                                wasSick ) {
                                                 woundChange = true;
                                                 
                                                 hitPlayer->holdingID = 
@@ -9636,6 +9657,9 @@ int main() {
                                         target );
                                     }
                                 
+                                double playerAge = computeAge( nextPlayer );
+                                
+
                                 if( r != NULL && containmentTransfer ) {
                                     // special case contained items
                                     // moving from actor into new target
@@ -9658,9 +9682,13 @@ int main() {
                                 else if( r != NULL &&
                                     // are we old enough to handle
                                     // what we'd get out of this transition?
-                                    ( r->newActor == 0 || 
-                                      getObject( r->newActor )->minPickupAge <= 
-                                      computeAge( nextPlayer ) ) 
+                                    ( ( r->newActor == 0 &&
+                                        playerAge >= defaultActionAge )
+                                      || 
+                                      ( r->newActor > 0 &&
+                                        getObject( r->newActor )->minPickupAge 
+                                        <= 
+                                        playerAge ) ) 
                                     &&
                                     // does this create a blocking object?
                                     // only consider vertical-blocking

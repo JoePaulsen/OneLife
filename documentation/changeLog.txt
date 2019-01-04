@@ -3,6 +3,56 @@ This file only list changes to game code.  Changes to content can be found here:
 http://onehouronelife.com/updateLog.php
 
 
+Version 188     2019-January-4
+
+--Fixed swap of baskets with different numbers of items in a larger container.
+  Fixes #184
+
+--Fixed tutorial wording to avoid confusion about Eve.  Fixes #185
+
+--Min age for default actions (open door, rouse bear) now 3.  Fixes #186
+
+--On reconnect, don't clear home markers unless we see a new player ID.
+  Fixes #188
+
+--/DIE command no longer blocks crafting hints for DIE when older than 2.
+  Fixes #189
+
+--Tutorial button on main menu page (appears after you beat tutorial).
+  Fixes #190
+
+
+
+
+Version 187     2019-January-3
+
+--Snowball splat face emote fixed.  Forgot to commit the emotionObjects.ini
+  settings file.  Fixes #177
+
+--No more jaundice glitch on hat or apron.  Fixes #172
+
+
+
+
+Server Fixes
+
+--Improved reflector code to spread players evenly amoung active servers
+  (thanks CrazyEddie).  Fixes #171
+
+--Wounds, like animal bites, can now replace sickness (though effects of
+  sickness are not eliminated until wound is fully healed).  Fixes #162
+
+--Missing global variable in curse server.
+
+--Fixed so that forced-drop when moving (when attacked by animal) drops
+  relative to current position and not destination.  Fixes #165
+
+--Fixed so that locks/keys don't revert to ? state when they reside in a
+  container during server shutdown.  Fixes #180
+
+
+
+
 Version 185     2018-December-27
 
 --Survivable apocalypse (full map wipe while players are still alive) that
