@@ -69,5 +69,5 @@ ln -s ../../OneLifeData7/dataVersionNumber.txt .
 git for-each-ref --sort=-creatordate --format '%(refname:short)' --count=1 refs/tags/OneLife_v* | sed -e 's/OneLife_v//' > serverCodeVersionNumber.txt
 
 
-echo 0 > settings/requireTicketServerCheck.ini
+#echo 0 > settings/requireTicketServerCheck.ini
 echo 1 > settings/forceEveLocation.ini

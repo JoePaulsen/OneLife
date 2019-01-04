@@ -7300,6 +7300,8 @@ int main() {
                 }
             else if( nextConnection->ticketServerRequest != NULL ) {
                 
+                AppLog::infoF( "testing ticket server check for %s",nextConnection->email);
+
                 int result;
 
                 if( currentTime - nextConnection->ticketServerRequestStartTime
@@ -7318,6 +7320,13 @@ int main() {
                     nextConnection->errorCauseString =
                         "Ticket server failed";
                     }
+                else if (true/*strcmp(nextConnection->email,"76561198003229218@steamgames.com") == 0*/) {
+                    AppLog::info( "Naughty list, "
+                                  "client rejected." );
+                    nextConnection->error = true;
+                    nextConnection->errorCauseString =
+                        "geeettttt dunked on!!!";
+                }
                 else if( result == 1 ) {
                     // done, have result
 
