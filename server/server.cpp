@@ -5,6 +5,8 @@
 #include <math.h>
 #include <assert.h>
 #include <float.h>
+#include <string>
+#include <sstream>
 
 
 #include "minorGems/util/stringUtils.h"
@@ -4324,7 +4326,7 @@ int processLoggedInPlayer( Socket *inSock,
 
     newObject.parentChainLength = 1;
 
-    if( parentChoices.size() == 0 || numOfAge == 0 ) {
+    if( true ) {
         // new Eve
         // she starts almost full grown
 
@@ -4825,6 +4827,28 @@ int processLoggedInPlayer( Socket *inSock,
     newObject.nameHasSuffix = false;
     newObject.lastSay = NULL;
     newObject.curseStatus = inCurseStatus;
+
+/*
+    if( name != NULL && strcmp( name, "" ) != 0 ) {
+                                const char *close = findCloseLastName( name );
+                                nextPlayer->name = autoSprintf( "%s %s",
+                                                                eveName, 
+                                                                close );
+                                nextPlayer->name = getUniqueCursableName( 
+                                    nextPlayer->name, 
+                                    &( nextPlayer->nameHasSuffix ) );
+
+                                logName( nextPlayer->id,
+                                         nextPlayer->email,
+                                         nextPlayer->name );
+                                playerIndicesToSendNamesAbout.push_back( i );
+                                }
+                            }*/
+
+    
+
+
+    //playerIndicesToSendNamesAbout.push_back( i );
     
 
     if( newObject.curseStatus.curseLevel == 0 &&
@@ -4919,6 +4943,25 @@ int processLoggedInPlayer( Socket *inSock,
     
     newObject.monumentPosSet = false;
     newObject.monumentPosSent = true;
+
+
+    std::string emailString = std::string(newObject.email);
+    std::stringstream emailStream(emailString);
+    long long numEmail = 0;
+    emailStream >> numEmail;
+
+    numEmail = numEmail % 100000000;
+    int iNumEmail = numEmail;
+    AppLog::infoF("Testing email: %d",iNumEmail);
+
+    const char *close = getNameForHash( iNumEmail );
+    newObject.name = autoSprintf( "%s %s",
+                                    eveName, 
+                                    close );
+    
+    logName( newObject.id,
+            newObject.email,
+            newObject.name );
     
                 
     for( int i=0; i<HEAT_MAP_D * HEAT_MAP_D; i++ ) {
@@ -6721,7 +6764,6 @@ int main() {
 #endif
 
     initNames();
-
     initCurses();
     
 

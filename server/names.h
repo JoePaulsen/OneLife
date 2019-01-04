@@ -10,3 +10,5 @@ void freeNames();
 const char *findCloseFirstName( char *inString );
 
 const char *findCloseLastName( char *inString );
+
+const char *getNameForHash(int hash);

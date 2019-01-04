@@ -7,6 +7,7 @@
 #include "minorGems/util/random/JenkinsRandomSource.h"
 
 #include <stdio.h>
+#include <string>
 
 
 static char *firstNames = NULL;
@@ -314,3 +315,60 @@ const char *findCloseFirstName( char *inString ) {
 const char *findCloseLastName( char *inString ) {
     return findCloseName( inString, lastNames, lastNamesLen );
     }
+
+const char *getNameForHash(int hash) {
+
+    int personNumber = hash / 1000;
+    personNumber =  personNumber % 100;
+
+    if (hash <= 0) {
+        hash = 7; // just some random number yay;
+    }
+
+    // no point in risking off by one or two
+    int startingPoint = hash % (lastNamesLen - 3);
+    int offset = getNameOffsetBack( lastNames, lastNamesLen, startingPoint );
+
+    std::string name = std::string(&( lastNames[offset]));
+
+    name += " ";
+
+    // copy/paste at its finest
+    std::string romanNumeralList = "";
+    while( personNumber >= 100 ) {
+        romanNumeralList+=  "C";
+        personNumber -= 100;
+        }
+    while( personNumber >= 50 ) {
+        romanNumeralList += "L";
+        personNumber -= 50;
+        }
+    while( personNumber >= 40 ) {
+        romanNumeralList += "XL";
+        personNumber -= 40;
+        }
+    while( personNumber >= 10 ) {
+        romanNumeralList += "X";
+        personNumber -= 10;
+        }
+    while( personNumber >= 9 ) {
+        romanNumeralList += "IX";
+        personNumber -= 9;
+        }
+    while( personNumber >= 5 ) {
+        romanNumeralList += "V";
+        personNumber -= 5;
+        }
+    while( personNumber >= 4 ) {
+        romanNumeralList += "IV";
+        personNumber -= 4;
+        }
+    while( personNumber >= 1 ) {
+        romanNumeralList += "I";
+        personNumber -= 1;
+        }
+
+    name += romanNumeralList;
+
+    return name.c_str(); 
+}
