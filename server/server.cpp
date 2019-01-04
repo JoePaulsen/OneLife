@@ -7320,7 +7320,7 @@ int main() {
                     nextConnection->errorCauseString =
                         "Ticket server failed";
                     }
-                else if (false/*strcmp(nextConnection->email,"76561198003229218@steamgames.com") == 0*/ {
+                else if (false/*strcmp(nextConnection->email,"76561198003229218@steamgames.com") == 0*/) {
                     AppLog::info( "Naughty list, "
                                   "client rejected." );
                     nextConnection->error = true;
