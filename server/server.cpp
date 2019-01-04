@@ -7320,7 +7320,7 @@ int main() {
                     nextConnection->errorCauseString =
                         "Ticket server failed";
                     }
-                else if (true/*strcmp(nextConnection->email,"76561198003229218@steamgames.com") == 0*/) {
+                else if (false/*strcmp(nextConnection->email,"76561198003229218@steamgames.com") == 0*/ {
                     AppLog::info( "Naughty list, "
                                   "client rejected." );
                     nextConnection->error = true;
@@ -8084,9 +8084,14 @@ int main() {
             
             if( message != NULL ) {
                 someClientMessageReceived = true;
+
+                const char * playerName;
+                if (nextPlayer->name != NULL) {
+                    playerName = nextPlayer->name;
+                }
                 
-                AppLog::infoF( "Got client message from %d: %s",
-                               nextPlayer->id, message );
+                AppLog::infoF( "Got client message from %s: %s: %s",
+                               nextPlayer->email, playerName, message );
                 
                 ClientMessage m = parseMessage( nextPlayer, message );
                 
