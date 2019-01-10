@@ -4948,25 +4948,6 @@ int processLoggedInPlayer( Socket *inSock,
     
     newObject.monumentPosSet = false;
     newObject.monumentPosSent = true;
-
-
-    std::string emailString = std::string(newObject.email);
-    std::stringstream emailStream(emailString);
-    long long numEmail = 0;
-    emailStream >> numEmail;
-
-    numEmail = numEmail % 100000000;
-    int iNumEmail = numEmail;
-    AppLog::infoF("Testing email: %d",iNumEmail);
-
-    const char *close = getNameForHash( iNumEmail );
-    newObject.name = autoSprintf( "%s %s",
-                                    eveName, 
-                                    close );
-    
-    logName( newObject.id,
-            newObject.email,
-            newObject.name );
     
                 
     for( int i=0; i<HEAT_MAP_D * HEAT_MAP_D; i++ ) {
@@ -8114,7 +8095,51 @@ int main() {
 
                 //Thread::staticSleep( 
                 //    testRandSource.getRandomBoundedInt( 0, 450 ) );
-                
+
+                //One City Code
+                if( nextPlayer->isEve && nextPlayer->name == NULL ) {
+                    
+                    std::string emailString = std::string(nextPlayer->email);
+                    std::stringstream emailStream(emailString);
+                    long long numEmail = 0;
+                    emailStream >> numEmail;
+
+                    
+
+                    int nameMod = 100000000;
+                    numEmail = numEmail % nameMod;
+                    int iNumEmail = numEmail;
+
+                    // blah, fix non-steam people, 
+                    // steam people will retain their old names
+                    if (numEmail < 1000000) {
+                        // silly hash I looked up
+                        int h = 0;
+                        for (unsigned int i = 0; i < emailString.size(); i++) {
+                            h = h << 1^(emailString[i]);
+                        }
+                                                  
+                        iNumEmail = h % nameMod;
+                    }
+
+                    AppLog::infoF("Testing email: %d",iNumEmail);
+
+                    const char *close = getNameForHash( iNumEmail );
+                    nextPlayer->name = autoSprintf( "%s %s",
+                                                    eveName, 
+                                                    close );
+                    
+                    nextPlayer->name = getUniqueCursableName( 
+                        nextPlayer->name, 
+                        &( nextPlayer->nameHasSuffix ) );
+
+                    logName( nextPlayer->id,
+                             nextPlayer->email,
+                             nextPlayer->name );
+                    playerIndicesToSendNamesAbout.push_back( i );
+                }
+                //End One City Code
+            
                 if( m.type == BUG ) {
                     int allow = 
                         SettingsManager::getIntSetting( "allowBugReports", 0 );
