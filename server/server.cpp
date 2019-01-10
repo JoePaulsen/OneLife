@@ -8,7 +8,6 @@
 #include <string>
 #include <sstream>
 
-
 #include "minorGems/util/stringUtils.h"
 #include "minorGems/util/SettingsManager.h"
 #include "minorGems/util/SimpleVector.h"
