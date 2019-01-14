@@ -1,4 +1,4 @@
-
+#include <string>
 
 void initNames();
 
@@ -11,4 +11,4 @@ const char *findCloseFirstName( char *inString );
 
 const char *findCloseLastName( char *inString );
 
-const char *getNameForHash(int hash);
+std::string getNameForHash(int hash);

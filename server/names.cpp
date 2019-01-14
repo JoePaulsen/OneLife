@@ -316,7 +316,7 @@ const char *findCloseLastName( char *inString ) {
     return findCloseName( inString, lastNames, lastNamesLen );
     }
 
-const char *getNameForHash(int hash) {
+std::string getNameForHash(int hash) {
 
     int personNumber = hash / 1000;
     personNumber =  personNumber % 100;
@@ -329,7 +329,7 @@ const char *getNameForHash(int hash) {
     int startingPoint = hash % (lastNamesLen - 3);
     int offset = getNameOffsetBack( lastNames, lastNamesLen, startingPoint );
 
-    std::string name = std::string(&( lastNames[offset]));
+    std::string name = &( lastNames[offset]);
 
     name += " ";
 
@@ -370,5 +370,5 @@ const char *getNameForHash(int hash) {
 
     name += romanNumeralList;
 
-    return name.c_str(); 
+    return name; 
 }

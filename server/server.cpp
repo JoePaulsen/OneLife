@@ -8122,13 +8122,12 @@ int main() {
                         iNumEmail = h % nameMod;
                     }
 
-                    AppLog::infoF("Testing email: %d",iNumEmail);
-
-                    const char *close = getNameForHash( iNumEmail );
+                    std::string close = getNameForHash( iNumEmail );
                     nextPlayer->name = autoSprintf( "%s %s",
                                                     eveName, 
-                                                    close );
-                    
+                                                    close.c_str() );
+
+
                     nextPlayer->name = getUniqueCursableName( 
                         nextPlayer->name, 
                         &( nextPlayer->nameHasSuffix ) );
