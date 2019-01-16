@@ -7,6 +7,8 @@
 #include <float.h>
 #include <string>
 #include <sstream>
+#include <map>
+#include <fstream>
 
 #include "minorGems/util/stringUtils.h"
 #include "minorGems/util/SettingsManager.h"
@@ -471,6 +473,71 @@ typedef struct LiveObject {
     } LiveObject;
 
 
+std::map<std::string, std::string> customNames;
+
+void resetCustomNames() {
+    std::ifstream inFile;
+    std::string email;
+    std::string name;
+
+    inFile.open("customNamesFile.txt");
+
+    while (true) {
+        if (!getline(inFile, email)) {
+            inFile.close();
+            break;
+        }
+        if (!getline(inFile, name)) {
+            inFile.close();
+            break;
+        }
+        customNames.insert(std::make_pair(email,name));
+    }
+    inFile.close();
+}
+
+std::string getCustomNameForEmail(std::string name) {
+    if (customNames.find(name) == customNames.end()) {
+        return "";
+    }
+    return customNames.find(name)->second;
+}
+
+void addNewCustomName(std::string email, std::string name) {
+    //std::ofstream ofile("customNamesFile.txt", std::ios::out | std::ios::app);
+    customNames.insert(std::make_pair(email,name));
+    //ofile.close();
+}
+
+// just using existing nomeclature
+void freeCustomNames() {
+    std::map<std::string, std::string>::iterator it;
+
+    std::ofstream ofile("customNamesFile.txt", std::ios::out);
+
+    for ( it = customNames.begin(); it != customNames.end(); it++ )
+    {
+        ofile << it->first << "\n";
+        ofile << it->second << "\n";
+    }
+    ofile.close();
+}
+
+bool validCustomName(std::string email, std::string name) {
+    if (getCustomNameForEmail(email) != "") {
+        return false;
+    }
+
+    std::map<std::string, std::string>::iterator it;
+
+    for ( it = customNames.begin(); it != customNames.end(); it++ )
+    {
+        if (it->second == name) {
+            return false;
+        }
+    }
+    return true; 
+}
 
 SimpleVector<LiveObject> players;
 SimpleVector<LiveObject> tutorialLoadingPlayers;
@@ -1010,6 +1077,8 @@ void quitCleanup() {
         }
     players.deleteAll();
 
+
+    freeCustomNames();
 
     freeLineageLimit();
     
@@ -6750,6 +6819,7 @@ int main() {
 #endif
 
     initNames();
+    resetCustomNames();
     initCurses();
     
 
@@ -8097,45 +8167,71 @@ int main() {
                 //    testRandSource.getRandomBoundedInt( 0, 450 ) );
 
                 //One City Code
-                if( nextPlayer->isEve && nextPlayer->name == NULL ) {
-                    
+                if( nextPlayer->isEve) {
+
                     std::string emailString = std::string(nextPlayer->email);
-                    std::stringstream emailStream(emailString);
-                    long long numEmail = 0;
-                    emailStream >> numEmail;
+                    if (m.type == SAY && m.saidText != NULL) {
+                        char * name = isFamilyNamingSay( m.saidText );
+                        if (name != NULL && strcmp( name, "" ) != 0 && validCustomName(emailString,name)) {
+                            nextPlayer->name = autoSprintf( "%s%s",
+                                                            "", 
+                                                            name );
 
-                    
+                            nextPlayer->name = getUniqueCursableName( 
+                                nextPlayer->name, 
+                                &( nextPlayer->nameHasSuffix ) );
 
-                    int nameMod = 100000000;
-                    numEmail = numEmail % nameMod;
-                    int iNumEmail = numEmail;
+                            logName( nextPlayer->id,
+                                     nextPlayer->email,
+                                     nextPlayer->name );
+                            playerIndicesToSendNamesAbout.push_back( i );
 
-                    // blah, fix non-steam people, 
-                    // steam people will retain their old names
-                    if (numEmail < 1000000) {
-                        // silly hash I looked up
-                        int h = 0;
-                        for (unsigned int i = 0; i < emailString.size(); i++) {
-                            h = h << 1^(emailString[i]);
+                            addNewCustomName(emailString,name);
                         }
-                                                  
-                        iNumEmail = h % nameMod;
+                    }
+                    
+                    if (nextPlayer->name == NULL) {
+                        std::stringstream emailStream(emailString);
+                        long long numEmail = 0;
+                        emailStream >> numEmail;
+
+                        int nameMod = 100000000;
+                        numEmail = numEmail % nameMod;
+                        int iNumEmail = numEmail;
+
+                        // blah, fix non-steam people, 
+                        // steam people will retain their old names
+                        if (numEmail < 1000000) {
+                            // silly hash I looked up
+                            int h = 0;
+                            for (unsigned int i = 0; i < emailString.size(); i++) {
+                                h = h << 1^(emailString[i]);
+                            }
+                                                      
+                            iNumEmail = h % nameMod;
+                        }
+
+                        std::string close = getNameForHash( iNumEmail );
+
+                        std::string customName = getCustomNameForEmail(emailString);
+                        if (customName != "") {
+                            close = customName;
+                        }
+                        nextPlayer->name = autoSprintf( "%s %s",
+                                                        eveName, 
+                                                        close.c_str() );
+
+                        nextPlayer->name = getUniqueCursableName( 
+                            nextPlayer->name, 
+                            &( nextPlayer->nameHasSuffix ) );
+
+                        logName( nextPlayer->id,
+                                 nextPlayer->email,
+                                 nextPlayer->name );
+                        playerIndicesToSendNamesAbout.push_back( i );    
                     }
 
-                    std::string close = getNameForHash( iNumEmail );
-                    nextPlayer->name = autoSprintf( "%s %s",
-                                                    eveName, 
-                                                    close.c_str() );
-
-
-                    nextPlayer->name = getUniqueCursableName( 
-                        nextPlayer->name, 
-                        &( nextPlayer->nameHasSuffix ) );
-
-                    logName( nextPlayer->id,
-                             nextPlayer->email,
-                             nextPlayer->name );
-                    playerIndicesToSendNamesAbout.push_back( i );
+                    
                 }
                 //End One City Code
             
@@ -8912,7 +9008,7 @@ int main() {
 
 
                         
-                        if( nextPlayer->isEve && nextPlayer->name == NULL ) {
+                        if( false/*nextPlayer->isEve && nextPlayer->name == NULL */) {
                             char *name = isFamilyNamingSay( m.saidText );
                             
                             if( name != NULL && strcmp( name, "" ) != 0 ) {
