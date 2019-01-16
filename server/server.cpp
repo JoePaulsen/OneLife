@@ -8217,8 +8217,8 @@ int main() {
                         if (customName != "") {
                             close = customName;
                         }
-                        nextPlayer->name = autoSprintf( "%s %s",
-                                                        eveName, 
+                        nextPlayer->name = autoSprintf( "%s%s",
+                                                        "", 
                                                         close.c_str() );
 
                         nextPlayer->name = getUniqueCursableName( 
