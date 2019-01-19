@@ -9,6 +9,8 @@
 #include <sstream>
 #include <map>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 
 #include "minorGems/util/stringUtils.h"
 #include "minorGems/util/SettingsManager.h"
@@ -474,6 +476,7 @@ typedef struct LiveObject {
 
 
 std::map<std::string, std::string> customNames;
+std::vector<std::string> bannedList;
 
 void resetCustomNames() {
     std::ifstream inFile;
@@ -537,6 +540,27 @@ bool validCustomName(std::string email, std::string name) {
         }
     }
     return true; 
+}
+
+void initBanList() {
+    std::ifstream inFile;
+    std::string email;
+
+    inFile.open("bannedList.txt");
+
+    while (true) {
+        if (!getline(inFile, email)) {
+            inFile.close();
+            break;
+        }
+        bannedList.push_back(email);
+    }
+    inFile.close();
+}
+
+bool isBanned(std::string email) {
+    int count = std::count(bannedList.begin(),bannedList.end(),email);
+    return (count > 0);
 }
 
 SimpleVector<LiveObject> players;
@@ -6857,6 +6881,7 @@ int main() {
 
     initNames();
     resetCustomNames();
+    initBanList();
     initCurses();
     
 
@@ -7406,6 +7431,7 @@ int main() {
                     result = -1;
                     }
 
+                bool banned = isBanned(std::string(nextConnection->email));
                 if( result == -1 ) {
                     AppLog::info( "Request to ticket server failed, "
                                   "client rejected." );
@@ -7413,7 +7439,7 @@ int main() {
                     nextConnection->errorCauseString =
                         "Ticket server failed";
                     }
-                else if (false/*strcmp(nextConnection->email,"76561198003229218@steamgames.com") == 0*/) {
+                else if (banned) {
                     AppLog::info( "Naughty list, "
                                   "client rejected." );
                     nextConnection->error = true;
