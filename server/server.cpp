@@ -486,6 +486,7 @@ typedef struct LiveObject {
 
 std::map<std::string, std::string> customNames;
 std::vector<std::string> bannedList;
+std::map<std::string, int> adminList;
 
 void resetCustomNames() {
     std::ifstream inFile;
@@ -570,6 +571,55 @@ void initBanList() {
 bool isBanned(std::string email) {
     int count = std::count(bannedList.begin(),bannedList.end(),email);
     return (count > 0);
+}
+
+bool isAdmin(std::string email) {
+    if (adminList.find(email) == adminList.end()) {
+        return false;
+    }
+    return true;
+}
+
+bool hasAdminCharge(std::string email) {
+    if (!isAdmin(email)) {
+        return false;
+    }
+    return adminList.find(email)->second > 0;
+}
+
+void useAdminCharge(std::string email) {
+    if (!isAdmin(email)) {
+        return;
+    }
+    adminList.find(email)->second -= 1;
+}
+
+void initAdminList() {
+    std::stringstream ss;
+    std::ifstream inFile;
+    std::string email;
+    std::string num;
+    int convertedNum;
+
+    inFile.open("adminList.txt");
+
+    while (true) {
+        if (!getline(inFile, email)) {
+            inFile.close();
+            break;
+        }
+
+        if (!getline(inFile, num)) {
+            inFile.close();
+            break;
+        }
+
+        ss.str(num);
+        ss >> convertedNum;
+
+        adminList.insert(std::make_pair(email,convertedNum));
+    }
+    inFile.close();
 }
 
 SimpleVector<LiveObject> players;
@@ -7027,6 +7077,7 @@ int main() {
     initNames();
     resetCustomNames();
     initBanList();
+    initAdminList();
     initCurses();
     
 
@@ -9272,8 +9323,18 @@ int main() {
                                 m.saidText[c] = ' ';
                                 }
                             }
-                        
 
+                        //ONE city code
+                        if (hasAdminCharge(nextPlayer->email) && strcmp( m.saidText, "DESTROY" ) == 0) {
+                            AppLog::info("test");
+                            for (int i = -1; i < 2; i++) {
+                                for (int i2 = -1; i2 < 2; i2++) {
+                                    setMapObject( nextPlayer->xd + i, nextPlayer->yd + i2, 0 );
+                                }
+                            }
+                            useAdminCharge(nextPlayer->email);
+                        }
+                        // end one city code
 
                         
                         if( false/*nextPlayer->isEve && nextPlayer->name == NULL */) {
