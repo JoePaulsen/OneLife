@@ -1150,7 +1150,7 @@ char *getNextServerMessage() {
             
             char *message = getNextServerMessageRaw();
             
-            if( message != NULL ) {
+            while( message != NULL ) {
                 messageType t = getMessageType( message );
                 
                 if( strstr( message, "FM" ) == message ) {
@@ -1159,6 +1159,11 @@ char *getNextServerMessage() {
                     
                     if( serverFrameMessages.size() > 0 ) {
                         serverFrameReady = true;
+                        // see end of frame, stop reading more messages
+                        // for now (they are part of next frame)
+                        // and start returning message to caller from
+                        // this frame
+                        break;
                         }
                     }
                 else if( t == MAP_CHUNK ||
@@ -1182,6 +1187,10 @@ char *getNextServerMessage() {
                     // keep it
                     serverFrameMessages.push_back( message );
                     }
+                
+                // keep reading messages, until we either see the 
+                // end of the frame or read all available messages
+                message = getNextServerMessageRaw();
                 }
             }
 
@@ -10370,9 +10379,7 @@ void LivingLifePage::step() {
         else if( type == SEQUENCE_NUMBER ) {
             // need to respond with LOGIN message
             
-            // in future versions of protocol,
-            // sequence number will be a nonce, and won't just be a pure number
-            char numberString[200];
+            char challengeString[200];
 
             // we don't use these for anything in client
             int currentPlayers = 0;
@@ -10383,7 +10390,7 @@ void LivingLifePage::step() {
                     "SN\n"
                     "%d/%d\n"
                     "%199s\n"
-                    "%d\n", &currentPlayers, &maxPlayers, numberString, 
+                    "%d\n", &currentPlayers, &maxPlayers, challengeString, 
                     &mRequiredVersion );
             
 
@@ -10428,9 +10435,9 @@ void LivingLifePage::step() {
                 }
             
 
-            char *pwHash = hmac_sha1( password, numberString );
+            char *pwHash = hmac_sha1( password, challengeString );
 
-            char *keyHash = hmac_sha1( pureKey, numberString );
+            char *keyHash = hmac_sha1( pureKey, challengeString );
             
             delete [] pureKey;
             delete [] password;
