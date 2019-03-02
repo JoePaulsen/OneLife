@@ -1,5 +1,8 @@
-int versionNumber = 204;
+int versionNumber = 206;
 int dataVersionNumber = 0;
+
+int binVersionNumber = versionNumber;
+
 
 // NOTE that OneLife doesn't use account hmacs
 
@@ -298,6 +301,8 @@ Font *handwritingFont;
 Font *pencilFont;
 Font *pencilErasedFont;
 
+Font *smallFont;
+
 
 char *shutdownMessage = NULL;
 
@@ -444,6 +449,12 @@ void initFrameDrawer( int inWidth, int inHeight, int inTargetFrameRate,
     
     updateDataVersionNumber();
 
+
+    AppLog::printOutNextMessage();
+    AppLog::infoF( "OneLife client v%d (binV=%d, dataV=%d) starting up",
+                   versionNumber, binVersionNumber, dataVersionNumber );
+            
+
     toggleLinearMagFilter( true );
     toggleMipMapGeneration( true );
     toggleMipMapMinFilter( true );
@@ -503,6 +514,9 @@ void initFrameDrawer( int inWidth, int inHeight, int inTargetFrameRate,
     mainFontFixed->setMinimumPositionPrecision( 1 );
     numbersFontFixed->setMinimumPositionPrecision( 1 );
     
+    smallFont = new Font( getFontTGAFileName(), 3, 8, false, 8 );
+
+
     handwritingFont = 
         new Font( "font_handwriting_32_32.tga", 3, 6, false, 16 );
 
@@ -672,7 +686,9 @@ void freeFrameDrawer() {
     delete handwritingFont;
     delete pencilFont;
     delete pencilErasedFont;
-
+    
+    delete smallFont;
+    
     if( currentUserTypedMessage != NULL ) {
         delete [] currentUserTypedMessage;
         currentUserTypedMessage = NULL;

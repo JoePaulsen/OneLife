@@ -29,3 +29,5 @@ server/categories
 server/objects
 server/transitions
 server/customNamesFile.txt
+
+server/adminList\.txt
