@@ -9071,8 +9071,6 @@ int main() {
                         list->deallocateStringElements();
                         delete list;
                         }
-
-                        allow = true;
                     
 
                     if( allow && nextPlayer->connected ) {
