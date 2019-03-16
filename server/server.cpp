@@ -509,6 +509,7 @@ typedef struct LiveObject {
 std::map<std::string, std::string> customNames;
 std::vector<std::string> bannedList;
 std::map<std::string, int> adminList;
+std::map<std::string, int> partialVogList;
 
 void resetCustomNames() {
     std::ifstream inFile;
@@ -642,6 +643,45 @@ void initAdminList() {
         adminList.insert(std::make_pair(email,convertedNum));
     }
     inFile.close();
+}
+
+
+/*bool isAdmin(std::string email) {
+    if (adminList.find(email) == adminList.end()) {
+        return false;
+    }
+    return true;
+}
+
+bool hasAdminCharge(std::string email) {
+    if (!isAdmin(email)) {
+        return false;
+    }
+    return adminList.find(email)->second > 0;
+}*/
+
+// currently, 0 = off, 1 = on
+int getPartialVog(std::string email) {
+    if (adminList.find(email) == adminList.end()) {
+        adminList.insert(std::make_pair(email,0));         
+    }
+    return adminList.find(email)->second;
+}
+
+void setPartialVog(std::string email, int level) {
+    if (adminList.find(email) == adminList.end()) {
+        adminList.insert(std::make_pair(email,0));         
+    }
+    adminList.find(email)->second = level;   
+}
+
+bool inVogLand(LiveObject * player) {
+    return inVogLand(player->xs, player->ys);
+}
+
+bool inVogLand(double x, double y) {
+    GridPos playerPos = { x, y };
+    return distance() < 1000000
 }
 
 SimpleVector<LiveObject> players;
@@ -4856,6 +4896,8 @@ int processLoggedInPlayer( Socket *inSock,
                     canHaveBaby = false;
                     }
                 }
+                // no babies iN OCS
+                canHaveBaby = false;
             
             if( canHaveBaby ) {
                 if( ( inCurseStatus.curseLevel == 0 && 
@@ -5331,6 +5373,10 @@ int processLoggedInPlayer( Socket *inSock,
                 SettingsManager::getIntSetting( "forceEveLocationY", 0 );
             }*/
         
+        if (getPartialVog(newObject->email) > 0) {
+            newObject.xs = 5000000;
+            newObject.ys = 5000000;
+        }
         
         newObject.xs = startX;
         newObject.ys = startY;
@@ -9094,7 +9140,9 @@ int main() {
                         list->deallocateStringElements();
                         delete list;
                         }
-                    
+                    if (getPartialVog(nextPlayer->email) > 1 && inVogLand(nextPlayer)) {
+                        allow = true;
+                    }
 
                     if( allow && nextPlayer->connected ) {
                         nextPlayer->vogMode = true;
@@ -9104,7 +9152,7 @@ int main() {
                         }
                     }
                 else if( m.type == VOGN ) {
-                    if( nextPlayer->vogMode &&
+                    if( getPartialVog(nextPlayer->email) == 0 && nextPlayer->vogMode &&
                         players.size() > 1 ) {
                         
                         nextPlayer->vogJumpIndex++;
@@ -9152,7 +9200,7 @@ int main() {
                         }
                     }
                 else if( m.type == VOGP ) {
-                    if( nextPlayer->vogMode &&
+                    if( getPartialVog(nextPlayer->email) == 0 && nextPlayer->vogMode &&
                         players.size() > 1 ) {
 
                         nextPlayer->vogJumpIndex--;
@@ -9201,7 +9249,8 @@ int main() {
                         }
                     }
                 else if( m.type == VOGM ) {
-                    if( nextPlayer->vogMode ) {
+                    if( nextPlayer->vogMode && 
+                        (getPartialVog(nextPlayer->email) == 0 || inVogLand(nextPlayer) )) {
                         nextPlayer->xd = m.x;
                         nextPlayer->yd = m.y;
                         
@@ -9220,7 +9269,8 @@ int main() {
                         }
                     }
                 else if( m.type == VOGI ) {
-                    if( nextPlayer->vogMode ) {
+                    if( nextPlayer->vogMode && 
+                        (getPartialVog(nextPlayer->email) == 0 || inVogLand(nextPlayer) )) {
                         if( m.id > 0 &&
                             getObject( m.id ) != NULL ) {
                             
@@ -9229,7 +9279,8 @@ int main() {
                         }
                     }
                 else if( m.type == VOGT && m.saidText != NULL ) {
-                    if( nextPlayer->vogMode ) {
+                    if( nextPlayer->vogMode && 
+                        (getPartialVog(nextPlayer->email) == 0 || inVogLand(nextPlayer) )) {
                         
                         newLocationSpeech.push_back( 
                             stringDuplicate( m.saidText ) );
@@ -9963,7 +10014,6 @@ int main() {
 
                         //ONE city code
                         if (hasAdminCharge(nextPlayer->email) && strcmp( m.saidText, "DESTROY" ) == 0) {
-                            AppLog::info("test");
                             for (int i = -1; i < 2; i++) {
                                 for (int i2 = -1; i2 < 2; i2++) {
                                     setMapObject( nextPlayer->xd + i, nextPlayer->yd + i2, 0 );
@@ -9971,6 +10021,17 @@ int main() {
                             }
                             useAdminCharge(nextPlayer->email);
                         }
+
+                        if (strcmp( m.saidText, "VOGON" ) == 0) {
+                            setPartialVog(nextPlayer->email,1);
+                        }
+
+                        if (strcmp( m.saidText, "VOGOFF" ) == 0) {
+                            if (nextPlayer->vogMode == false) {
+                                setPartialVog(nextPlayer->email,0);    
+                            }
+                        }
+
                         // end one city code
 
                         
