@@ -676,10 +676,10 @@ void setPartialVog(std::string email, int level) {
 }
 
 bool inVogLand(LiveObject * player) {
-    return inVogLand(player->xs, player->ys);
+    return inVogLandGridPos(player->xs, player->ys);
 }
 
-bool inVogLand(double x, double y) {
+bool inVogLandGridPos(double x, double y) {
     GridPos playerPos = { x, y };
     return distance() < 1000000
 }
