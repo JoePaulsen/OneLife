@@ -662,17 +662,17 @@ bool hasAdminCharge(std::string email) {
 
 // currently, 0 = off, 1 = on
 int getPartialVog(std::string email) {
-    if (adminList.find(email) == adminList.end()) {
-        adminList.insert(std::make_pair(email,0));         
+    if (partialVogList.find(email) == partialVogList.end()) {
+        partialVogList.insert(std::make_pair(email,0));         
     }
-    return adminList.find(email)->second;
+    return partialVogList.find(email)->second;
 }
 
 void setPartialVog(std::string email, int level) {
-    if (adminList.find(email) == adminList.end()) {
-        adminList.insert(std::make_pair(email,0));         
+    if (partialVogList.find(email) == partialVogList.end()) {
+        partialVogList.insert(std::make_pair(email,level));         
     }
-    adminList.find(email)->second = level;   
+    partialVogList.find(email)->second = level;   
 }
 
 bool inVogLandGridPos(int x, int y) {
@@ -5374,9 +5374,9 @@ int processLoggedInPlayer( Socket *inSock,
                 SettingsManager::getIntSetting( "forceEveLocationY", 0 );
             }*/
         
-        if (getPartialVog(newObject.email) > 0) {
-            newObject.xs = 5000000;
-            newObject.ys = 5000000;
+        if (getPartialVog(newObject.email) >= 1) {
+            startX = 5000000;
+            startY = 5000000;
         }
         
         newObject.xs = startX;
@@ -9141,7 +9141,8 @@ int main() {
                         list->deallocateStringElements();
                         delete list;
                         }
-                    if (getPartialVog(nextPlayer->email) > 1 && inVogLand(nextPlayer)) {
+
+                    if (getPartialVog(nextPlayer->email) >= 1 && inVogLand(nextPlayer)) {
                         allow = true;
                     }
 
@@ -9354,7 +9355,7 @@ int main() {
                                          strlen( message ) );
                     delete [] message;
                     }
-                else if( m.type == DIE ) {
+                else if( m.type == DIE || (m.saidText != NULL && strcmp( m.saidText, "DIE" ) == 0) ) {
                     if( true/*computeAge( nextPlayer ) < 2 */) {
                         
                         // killed self
@@ -10024,6 +10025,7 @@ int main() {
                         }
 
                         if (strcmp( m.saidText, "VOGON" ) == 0) {
+                            AppLog::info("turning vog on");
                             setPartialVog(nextPlayer->email,1);
                         }
 
