@@ -13431,7 +13431,7 @@ int main() {
                         if( nextPlayer->holdingFlightObject &&
                             moveSpeed >= minFlightSpeed &&
                             ! nextPlayer->pathTruncated &&
-                            nextPlayer->pathLength >= 2 ) {
+                            nextPlayer->pathLength >= 2 && !inVogLand(nextPlayer)) {
                                     
                             // player takes off ?
                             
@@ -13495,7 +13495,7 @@ int main() {
                                 char heldTransHappened = false;
                                     
                                 if( destID > 0 &&
-                                    getObject( destID )->isFlightLanding ) {
+                                    getObject( destID )->isFlightLanding && !inVogLandGridPos(destPos.x, destPos.y)) {
                                     // found a landing place
                                     TransRecord *tr =
                                         getPTrans( nextPlayer->holdingID,
