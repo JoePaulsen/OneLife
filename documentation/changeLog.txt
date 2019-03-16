@@ -4,7 +4,7 @@ http://onehouronelife.com/updateLog.php
 
 
 
-Version 209     ????
+Version 211     2019-March-16
 
 --Fixed overlay negative scaling check in EditorImportPage.  Thanks Chard.
   Fixes #243
@@ -14,6 +14,12 @@ Version 209     ????
 --Added work-around for corrupted bin_cache files instead of crashing.
 
 --100 Hz added to possible frame rates.
+
+--Left or right click now works to remove specific item from permanent
+  container.  Fixes #257
+
+--Support for sounds in emot objects.
+
 
 
 
@@ -56,6 +62,9 @@ Server Fixes:
 
 --Prevented relative position leaking for far-away player in initial player
   update message.  Also fixed for far-away grave messages.  Fixes #251
+
+--Support for forbidden emot indices right in middle of list instead of just at
+  end of list.
 
 
 
