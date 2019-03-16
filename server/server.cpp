@@ -675,13 +675,14 @@ void setPartialVog(std::string email, int level) {
     adminList.find(email)->second = level;   
 }
 
-bool inVogLand(LiveObject * player) {
-    return inVogLandGridPos(player->xs, player->ys);
+bool inVogLandGridPos(int x, int y) {
+    GridPos playerPos = { x, y };
+    GridPos vogCenter = { 5000000, 5000000 };
+    return distance(playerPos, vogCenter) < 1000000;
 }
 
-bool inVogLandGridPos(double x, double y) {
-    GridPos playerPos = { x, y };
-    return distance() < 1000000
+bool inVogLand(LiveObject * player) {
+    return inVogLandGridPos(player->xs, player->ys);
 }
 
 SimpleVector<LiveObject> players;
@@ -5373,7 +5374,7 @@ int processLoggedInPlayer( Socket *inSock,
                 SettingsManager::getIntSetting( "forceEveLocationY", 0 );
             }*/
         
-        if (getPartialVog(newObject->email) > 0) {
+        if (getPartialVog(newObject.email) > 0) {
             newObject.xs = 5000000;
             newObject.ys = 5000000;
         }
