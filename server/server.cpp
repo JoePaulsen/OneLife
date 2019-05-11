@@ -9441,7 +9441,8 @@ int main() {
 
                             logName( nextPlayer->id,
                                      nextPlayer->email,
-                                     nextPlayer->name );
+                                     nextPlayer->name,
+                                     nextPlayer->lineageEveID );
                             playerIndicesToSendNamesAbout.push_back( i );
 
                             addNewCustomName(emailString,name);
@@ -9485,7 +9486,8 @@ int main() {
 
                         logName( nextPlayer->id,
                                  nextPlayer->email,
-                                 nextPlayer->name );
+                                 nextPlayer->name,
+                                 nextPlayer->lineageEveID );
                         playerIndicesToSendNamesAbout.push_back( i );    
                     }
 
