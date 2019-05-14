@@ -16440,43 +16440,44 @@ int main() {
                                 
                                 delete [] line;
                                 }
-                            messageWorking.appendElementString( "#" );
-                            
-                            char *messageText = 
-                                messageWorking.getElementString();
-                            
-                            int messageLen = strlen( messageText );
-            
-                            unsigned char *message = 
-                                (unsigned char*) messageText;
-                            
-
-                            if( messageLen >= maxUncompressedSize ) {
-                                char *old = messageText;
-                                int oldLen = messageLen;
-                                
-                                message = makeCompressedMessage( 
-                                    old, 
-                                    oldLen, &messageLen );
-                                
-                                delete [] old;
-                                }
-
-                            
-                            int numSent = 
-                                nextPlayer->sock->send( 
-                                    message, 
-                                    messageLen, 
-                                    false, false );
+                            }
                         
-                            delete [] message;
+                        messageWorking.appendElementString( "#" );
                             
-                            nextPlayer->gotPartOfThisFrame = true;
+                        char *messageText = 
+                            messageWorking.getElementString();
                         
-                            if( numSent != messageLen ) {
-                                setPlayerDisconnected( nextPlayer, 
-                                                       "Socket write failed" );
-                                }
+                        int messageLen = strlen( messageText );
+                        
+                        unsigned char *message = 
+                            (unsigned char*) messageText;
+                        
+                        
+                        if( messageLen >= maxUncompressedSize ) {
+                            char *old = messageText;
+                            int oldLen = messageLen;
+                            
+                            message = makeCompressedMessage( 
+                                old, 
+                                oldLen, &messageLen );
+                            
+                            delete [] old;
+                            }
+                        
+                        
+                        int numSent = 
+                            nextPlayer->sock->send( 
+                                message, 
+                                messageLen, 
+                                false, false );
+                        
+                        delete [] message;
+                        
+                        nextPlayer->gotPartOfThisFrame = true;
+                        
+                        if( numSent != messageLen ) {
+                            setPlayerDisconnected( nextPlayer, 
+                                                   "Socket write failed" );
                             }
                         }
                     }
