@@ -533,3 +533,123 @@ L4 | Thu Feb 14 13:27:40 2019 (543 ms) | general | exiting: calling SDL_Quit()
 
 L4 | Thu Feb 14 13:27:40 2019 (560 ms) | general | exiting: Done.
 
+L4 | Sat Apr 20 19:54:20 2019 (586 ms) | general | New game starting up
+L4 | Sat Apr 20 19:54:20 2019 (594 ms) | general | Target game image size:  1024x600
+
+L4 | Sat Apr 20 19:54:20 2019 (617 ms) | general | Ideal window dimensions:  1280x720
+
+L4 | Sat Apr 20 19:54:20 2019 (618 ms) | general | Trying to start in fullscreen mode.
+L4 | Sat Apr 20 19:54:20 2019 (638 ms) | general | The following frame rates are considered possible:
+L4 | Sat Apr 20 19:54:20 2019 (638 ms) | general | 30 fps
+L4 | Sat Apr 20 19:54:20 2019 (639 ms) | general | 60 fps
+L4 | Sat Apr 20 19:54:20 2019 (639 ms) | general | 100 fps
+L4 | Sat Apr 20 19:54:20 2019 (639 ms) | general | 120 fps
+L4 | Sat Apr 20 19:54:20 2019 (639 ms) | general | 144 fps
+L4 | Sat Apr 20 19:54:20 2019 (664 ms) | general | Setting borderless mode for fullscreen
+L4 | Sat Apr 20 19:54:20 2019 (664 ms) | general | Current screen configuration is 1360x663 with aspect ratio 2.05
+L4 | Sat Apr 20 19:54:20 2019 (664 ms) | general | All resolutions available
+L4 | Sat Apr 20 19:54:20 2019 (664 ms) | general | Sticking with user's current screen resolution
+L4 | Sat Apr 20 19:54:20 2019 (665 ms) | general | Adding 1 to borderless window height of 663 resulting in total height of 664
+L4 | Sat Apr 20 19:54:21 2019 (143 ms) | general | Successfully opened audio: 44100Hz (requested 44100Hz), sample buffer size=512 (requested 1024)
+
+L4 | Sat Apr 20 19:54:23 2019 (246 ms) | general | Recording game into file recordedGames/recordedGame000069.txt
+L4 | Sat Apr 20 19:54:23 2019 (252 ms) | general | Only keeping 20 past recordings
+L4 | Sat Apr 20 19:54:23 2019 (253 ms) | general | Removed 1 stale recordings
+L4 | Sat Apr 20 19:58:53 2019 (394 ms) | general | exiting...
+
+L4 | Sat Apr 20 19:58:53 2019 (394 ms) | general | exiting: calling SDL_CloseAudio
+
+L4 | Sat Apr 20 19:58:53 2019 (613 ms) | general | exiting: Deleting sceneHandler
+
+L4 | Sat Apr 20 19:58:53 2019 (613 ms) | general | Freeing sound sprites
+
+L4 | Sat Apr 20 19:58:53 2019 (613 ms) | general | exiting: freeing frameDrawer
+
+L4 | Sat Apr 20 19:58:53 2019 (749 ms) | general | exiting: Deleting screen
+
+L4 | Sat Apr 20 19:58:53 2019 (754 ms) | general | exiting: freeing drawString
+
+L4 | Sat Apr 20 19:58:53 2019 (754 ms) | general | exiting: calling SDL_Quit()
+
+L4 | Sat Apr 20 19:58:53 2019 (845 ms) | general | exiting: Done.
+
+L4 | Sat Apr 20 20:01:01 2019 (589 ms) | general | New game starting up
+L4 | Sat Apr 20 20:01:01 2019 (589 ms) | general | Target game image size:  1024x600
+
+L4 | Sat Apr 20 20:01:01 2019 (613 ms) | general | Ideal window dimensions:  1280x720
+
+L4 | Sat Apr 20 20:01:01 2019 (614 ms) | general | Trying to start in fullscreen mode.
+L4 | Sat Apr 20 20:01:01 2019 (634 ms) | general | The following frame rates are considered possible:
+L4 | Sat Apr 20 20:01:01 2019 (634 ms) | general | 30 fps
+L4 | Sat Apr 20 20:01:01 2019 (634 ms) | general | 60 fps
+L4 | Sat Apr 20 20:01:01 2019 (634 ms) | general | 100 fps
+L4 | Sat Apr 20 20:01:01 2019 (634 ms) | general | 120 fps
+L4 | Sat Apr 20 20:01:01 2019 (634 ms) | general | 144 fps
+L4 | Sat Apr 20 20:01:01 2019 (682 ms) | general | Setting borderless mode for fullscreen
+L4 | Sat Apr 20 20:01:01 2019 (682 ms) | general | Current screen configuration is 1360x663 with aspect ratio 2.05
+L4 | Sat Apr 20 20:01:01 2019 (682 ms) | general | All resolutions available
+L4 | Sat Apr 20 20:01:01 2019 (682 ms) | general | Sticking with user's current screen resolution
+L4 | Sat Apr 20 20:01:01 2019 (683 ms) | general | Adding 1 to borderless window height of 663 resulting in total height of 664
+L4 | Sat Apr 20 20:01:01 2019 (929 ms) | general | Successfully opened audio: 44100Hz (requested 44100Hz), sample buffer size=512 (requested 1024)
+
+L4 | Sat Apr 20 20:01:03 2019 (220 ms) | general | Recording game into file recordedGames/recordedGame000070.txt
+L4 | Sat Apr 20 20:01:03 2019 (222 ms) | general | Only keeping 20 past recordings
+L4 | Sat Apr 20 20:01:03 2019 (222 ms) | general | Removed 1 stale recordings
+L4 | Sat Apr 20 20:08:22 2019 (464 ms) | general | exiting...
+
+L4 | Sat Apr 20 20:08:22 2019 (464 ms) | general | exiting: calling SDL_CloseAudio
+
+L4 | Sat Apr 20 20:08:22 2019 (675 ms) | general | exiting: Deleting sceneHandler
+
+L4 | Sat Apr 20 20:08:22 2019 (675 ms) | general | Freeing sound sprites
+
+L4 | Sat Apr 20 20:08:22 2019 (675 ms) | general | exiting: freeing frameDrawer
+
+L4 | Sat Apr 20 20:08:22 2019 (827 ms) | general | exiting: Deleting screen
+
+L4 | Sat Apr 20 20:08:22 2019 (830 ms) | general | exiting: freeing drawString
+
+L4 | Sat Apr 20 20:08:22 2019 (831 ms) | general | exiting: calling SDL_Quit()
+
+L4 | Sat Apr 20 20:08:22 2019 (888 ms) | general | exiting: Done.
+
+L4 | Sat Apr 20 20:09:25 2019 (398 ms) | general | New game starting up
+L4 | Sat Apr 20 20:09:25 2019 (398 ms) | general | Target game image size:  1024x600
+
+L4 | Sat Apr 20 20:09:25 2019 (420 ms) | general | Ideal window dimensions:  1280x720
+
+L4 | Sat Apr 20 20:09:25 2019 (421 ms) | general | Trying to start in fullscreen mode.
+L4 | Sat Apr 20 20:09:25 2019 (441 ms) | general | The following frame rates are considered possible:
+L4 | Sat Apr 20 20:09:25 2019 (442 ms) | general | 30 fps
+L4 | Sat Apr 20 20:09:25 2019 (442 ms) | general | 60 fps
+L4 | Sat Apr 20 20:09:25 2019 (442 ms) | general | 100 fps
+L4 | Sat Apr 20 20:09:25 2019 (442 ms) | general | 120 fps
+L4 | Sat Apr 20 20:09:25 2019 (442 ms) | general | 144 fps
+L4 | Sat Apr 20 20:09:25 2019 (479 ms) | general | Setting borderless mode for fullscreen
+L4 | Sat Apr 20 20:09:25 2019 (479 ms) | general | Current screen configuration is 1360x663 with aspect ratio 2.05
+L4 | Sat Apr 20 20:09:25 2019 (479 ms) | general | All resolutions available
+L4 | Sat Apr 20 20:09:25 2019 (479 ms) | general | Sticking with user's current screen resolution
+L4 | Sat Apr 20 20:09:25 2019 (479 ms) | general | Adding 1 to borderless window height of 663 resulting in total height of 664
+L4 | Sat Apr 20 20:09:25 2019 (769 ms) | general | Successfully opened audio: 44100Hz (requested 44100Hz), sample buffer size=512 (requested 1024)
+
+L4 | Sat Apr 20 20:09:26 2019 (856 ms) | general | Recording game into file recordedGames/recordedGame000071.txt
+L4 | Sat Apr 20 20:09:26 2019 (866 ms) | general | Only keeping 20 past recordings
+L4 | Sat Apr 20 20:09:26 2019 (886 ms) | general | Removed 1 stale recordings
+L4 | Sat Apr 20 20:15:16 2019 (83 ms) | general | exiting...
+
+L4 | Sat Apr 20 20:15:16 2019 (83 ms) | general | exiting: calling SDL_CloseAudio
+
+L4 | Sat Apr 20 20:15:16 2019 (308 ms) | general | exiting: Deleting sceneHandler
+
+L4 | Sat Apr 20 20:15:16 2019 (308 ms) | general | Freeing sound sprites
+
+L4 | Sat Apr 20 20:15:16 2019 (308 ms) | general | exiting: freeing frameDrawer
+
+L4 | Sat Apr 20 20:15:16 2019 (437 ms) | general | exiting: Deleting screen
+
+L4 | Sat Apr 20 20:15:16 2019 (439 ms) | general | exiting: freeing drawString
+
+L4 | Sat Apr 20 20:15:16 2019 (440 ms) | general | exiting: calling SDL_Quit()
+
+L4 | Sat Apr 20 20:15:16 2019 (502 ms) | general | exiting: Done.
+
