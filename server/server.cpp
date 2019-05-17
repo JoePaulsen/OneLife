@@ -5624,10 +5624,26 @@ int processLoggedInPlayer( Socket *inSock,
             }
 
         // else starts at civ outskirts (lone Eve)
+        
+        SimpleVector<GridPos> otherPeoplePos( numPlayers );
+        
+        for( int i=0; i<numPlayers; i++ ) {
+            LiveObject *player = players.getElement( i );
+            
+            if( player->error || 
+                ! player->connected ) {
+                continue;
+                }
+            GridPos p = { player->xs, player->ys };
+            otherPeoplePos.push_back( p );
+            }
+        
+
         int startX, startY;
 
         /*getEvePosition( newObject.email, 
-                        newObject.id, &startX, &startY, allowEveRespawn );*/
+                        newObject.id, &startX, &startY, 
+                        &otherPeoplePos, allowEveRespawn );*/
 
 
         startX = MySpotOverrideX + randSource.getRandomBoundedInt( -spotOverrideRandomFactor, spotOverrideRandomFactor );
