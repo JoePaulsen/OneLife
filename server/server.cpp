@@ -11115,6 +11115,35 @@ int main() {
                                     LiveObject *hitPlayer = 
                                         getHitPlayer( m.x, m.y, m.id, true );
                                     
+
+                                    if( hitPlayer == NULL && m.id > 0 ) {
+                                        // they claim to have clicked someone
+                                        // but we think they didn't
+                                        
+                                        hitPlayer = getLiveObject( m.id );
+                                        
+                                        if( hitPlayer != NULL ) {
+                                            // check if the target player is in
+                                            // range
+                                            GridPos otherPlayerPos = 
+                                                getPlayerPos( hitPlayer );
+                                            
+                                            double otherDist =
+                                                distance( playerPos, 
+                                                          otherPlayerPos );
+                                        
+                                            // give them the benefit of the
+                                            // doubt.  Add +1 to allowed
+                                            // distance.
+                                            if( otherDist > 
+                                                heldObj->deadlyDistance + 1 ) {
+                                                
+                                                hitPlayer = NULL;
+                                                }
+                                            }
+                                        }
+                                    
+
                                     char someoneHit = false;
 
 
@@ -12103,9 +12132,12 @@ int main() {
                                           computeAge( nextPlayer ) ) ) {
                                         
                                         canPlace = true;
+                                        
+                                        ObjectRecord *newTargetObj =
+                                            getObject( r->newTarget );
+                                        
 
-                                        if( getObject( r->newTarget )->
-                                            blocksWalking &&
+                                        if( newTargetObj->blocksWalking &&
                                             ! isMapSpotEmpty( m.x, m.y ) ) {
                                             
                                             // can't do on-bare ground
@@ -12113,6 +12145,17 @@ int main() {
                                             // standing
                                             // if it creates a blocking 
                                             // object
+                                            canPlace = false;
+                                            }
+                                        else if( 
+                                            strstr( newTargetObj->description, 
+                                                    "groundOnly" ) != NULL
+                                            &&
+                                            getMapFloor( m.x, m.y ) != 0 ) {
+                                            // floor present
+                                        
+                                            // new target not allowed 
+                                            // to exist on floor
                                             canPlace = false;
                                             }
                                         }
@@ -13708,6 +13751,13 @@ int main() {
                     deathID = nextPlayer->customGraveID;
                     }
 
+                char deathMarkerHasSlots = false;
+                
+                if( deathID > 0 ) {
+                    deathMarkerHasSlots = 
+                        ( getObject( deathID )->numSlots > 0 );
+                    }
+
                 int oldObject = getMapObject( dropPos.x, dropPos.y );
                 
                 SimpleVector<int> oldContained;
@@ -13728,7 +13778,8 @@ int main() {
                         if( ! isGrave( oldObject ) ) {
                             ObjectRecord *r = getObject( oldObject );
                             
-                            if( r->numSlots == 0 && ! r->permanent 
+                            if( deathMarkerHasSlots &&
+                                r->numSlots == 0 && ! r->permanent 
                                 && ! r->rideable ) {
                                 
                                 // found a containble object
